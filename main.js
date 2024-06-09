@@ -16,6 +16,7 @@ const sign = document.querySelector(".sign");
 const dot = document.querySelector('.dot');
 const digitList = document.querySelectorAll(".digit");
 const display = document.querySelector(".display");
+const del = document.querySelector(".del");
 
 function formatResult(result) {
     if (result < -999999999999 || result > 999999999999) {
@@ -102,6 +103,12 @@ function addOperator(op) {
     } 
 }
 
+function deleteLastDigit() {
+    if (val1 != 0 && val1.length === 1) val1 = '0';
+    if (val1 != '0' && val1.length > 1)  val1 = val1.slice(0, -1);
+    displayResult(val1);
+}
+
 operationList.forEach((el) => {
     el.addEventListener('click', () => {
         const op = el.textContent;
@@ -140,14 +147,14 @@ digitList.forEach((el) => {
     }); 
 })
 
+del.addEventListener('click', () => deleteLastDigit());
+
 document.addEventListener('keydown', (event) => {
     const key = event.key;
     if (/^[0-9]$/.test(key)) {
         populate(key);
     } else if (key === 'Backspace') {
-        if (val1 != 0 && val1.length === 1) val1 = '0';
-        if (val1 != '0' && val1.length > 1)  val1 = val1.slice(0, -1);
-        displayResult(val1);
+        deleteLastDigit();
     } else if (key === '=') {
         result = operate(result, operator, val1)
         displayResult(result);
